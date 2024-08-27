@@ -1,8 +1,8 @@
-# `<name of application here>`
+# VacayStay
 
 ## Database Schema Design
 
-`<insert database schema design here>`
+![image of database schema](/backend/db_schema.png)
 
 ## API Documentation
 
@@ -50,7 +50,7 @@ Returns the information about the current user that is logged in.
 * Require Authentication: false
 * Request
   * Method: 'GET'
-  * Route path: '/currentUser
+  * Route path: '/currentUser'
   * Body: none
 
 * Successful Response when there is a logged in user
@@ -967,7 +967,7 @@ Return all the bookings that the current user has made.
 
 * Require Authentication: true
 * Request
-  * Method: 'GET' 
+  * Method: 'GET'
   * Route path: '/bookings'
   * Body: none
 
