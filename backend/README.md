@@ -2,8 +2,8 @@
 
 ## Database Schema Design
 
-![db-schema]
-[db-schema]:/backend/images/db_schema.png)
+![Database Schema Design](images/db_schema.png)
+
 
 ## API Documentation
 
@@ -1422,14 +1422,14 @@ Delete an existing image for a Review.
 - Request
 
   - Method: 'DELETE'
-  - Route path: '/api/reviews/:reviewId/images'
+  - Route path: '/api/images/:imageId'
   - Body: none
 
+    - Content-Type: application/json
 - Successful Response
 
   - Status Code: 200
   - Headers:
-    - Content-Type: application/json
   - Body:
 
     ```json

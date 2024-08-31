@@ -53,7 +53,7 @@ Returns the information about the current user that is logged in.
 - Request
 
   - Method: 'GET'
-  - Route path: '/api/sessions'
+  - Route path: '/api/session'
   - Body: none
 
 - Successful Response when there is a logged in user
@@ -97,7 +97,7 @@ information.
 - Request
 
   - Method: 'POST'
-  - Route path: '/users/login'
+  - Route path: '/api/session'
   - Headers:
     - Content-Type: application/json
   - Body:
@@ -289,7 +289,7 @@ Returns all the spots owned (created) by the current user.
 - Request
 
   - Method: 'GET'
-  - Route path: '/spots/:ownerId'
+  - Route path: '/api/spots/current'
   - Body: none
 
 - Successful Response
@@ -399,7 +399,7 @@ Creates and returns a new spot.
 - Request
 
   - Method: 'POST'
-  - Route path: 'api/spots'
+  - Route path: '/api/spots'
   - Headers:
     - Content-Type: application/json
   - Body:
@@ -654,7 +654,7 @@ Returns all the reviews written by the current user.
 - Request
 
   - Method: 'GET'
-  - Route path: '/api/reviews/:userId'
+  - Route path: '/api/reviews/current'
   - Body: none
 
 - Successful Response
@@ -712,7 +712,7 @@ Returns all the reviews that belong to a spot specified by id.
 - Request
 
   - Method: 'GET'
-  - Route path: 'api/spots/:spotId/reviews'
+  - Route path: '/api/spots/:spotId/reviews'
   - Body: none
 
 - Successful Response
@@ -1023,7 +1023,7 @@ Return all the bookings that the current user has made.
 - Request
 
   - Method: 'GET'
-  - Route path: '/api/bookings'
+  - Route path: '/api/bookings/current'
   - Body: none
 
 - Successful Response
@@ -1383,7 +1383,8 @@ Delete an existing image for a Spot.
 - Request
 
   - Method: 'DELETE'
-  - Route path: '/api/images/ '
+  - Route Path: /api/images/:imageId
+
   - Body: none
 
 - Successful Response
@@ -1421,7 +1422,7 @@ Delete an existing image for a Review.
 - Request
 
   - Method: 'DELETE'
-  - Route path: '/api/reviews/:reviewId/images'
+  - Route path: '/api/reviews/:reviewId'
   - Body: none
 
 - Successful Response
@@ -1458,7 +1459,7 @@ Return spots filtered by query parameters.
 - Request
 
   - Method: 'GET'
-  - Route path: '/spots'
+  - Route path: '/api/spots'
   - Query Parameters
     - page: integer, minimum: 1, default: 1
     - size: integer, minimum: 1, maximum: 20, default: 20
