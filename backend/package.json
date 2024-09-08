@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "## Database Schema Design",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "sequelize": "sequelize",
     "sequelize-cli": "sequelize-cli",
