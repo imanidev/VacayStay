@@ -1,11 +1,11 @@
-// backend/routes/api/index.js
 const router = require("express").Router();
 const spotsRouter = require("./spots.js");
 const sessionRouter = require("./session.js");
 const usersRouter = require("./users.js");
 const reviewsRouter = require("./reviews.js");
 const bookingsRouter = require("./bookings.js");
-
+const spotimagesRouter = require("./spot-images.js");
+const reviewimagesRouter = require("./review-images.js");
 const { restoreUser } = require("../../utils/auth.js");
 router.use(restoreUser);
 
@@ -19,8 +19,9 @@ router.use("/reviews", reviewsRouter);
 
 router.use("/bookings", bookingsRouter);
 
-router.use("/images", spotimagesRouter);
+router.use("/spot-images", spotimagesRouter);
 
+router.use("/review-images", reviewimagesRouter);
 
 router.post("/test", function (req, res) {
   res.json({ requestBody: req.body });
@@ -28,8 +29,3 @@ router.post("/test", function (req, res) {
 
 module.exports = router;
 
-// router.post("/test", function (req, res) {
-//   res.json({ requestBody: req.body }); // Responds with the request body as JSON
-// });
-
-module.exports = router;
