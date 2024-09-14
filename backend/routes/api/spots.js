@@ -2,11 +2,11 @@ const router = require("express").Router();
 const { Op } = require("sequelize");
 const {
   Spot,
-  SpotImage,
+  SpotImages,
   User,
   Review,
   Sequelize,
-  ReviewImage,
+  ReviewImages,
 } = require("../../db/models");
 const bookingsRouter = require("./booking");
 const reviewsRouter = require("./reviews");
@@ -168,7 +168,7 @@ router.get("/:spotId", async (req, res, next) => {
     const spot = await Spot.findByPk(spotId, {
       include: [
         {
-          model: SpotImage,
+          model: SpotImages,
           attributes: ["id", "url", "preview"],
           as: "SpotImages",
         },
@@ -242,7 +242,7 @@ router.get("/:spotId/reviews", async (req, res, next) => {
           attributes: ["id", "firstName", "lastName"],
         },
         {
-          model: ReviewImage,
+          model: ReviewImages,
           attributes: ["id", "url"],
         },
       ],
@@ -315,7 +315,7 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
       });
     }
 
-    const newSpotImage = await SpotImage.create({
+    const newSpotImage = await SpotImages.create({
       url,
       preview,
       spotId,

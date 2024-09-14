@@ -1,5 +1,5 @@
 const { requireAuth } = require("../../utils/auth");
-const { User, Review, Spot, ReviewImage } = require("../../db/models");
+const { User, Review, Spot, ReviewImages } = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const router = require("express").Router();
@@ -46,7 +46,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
           ],
         },
         {
-          model: ReviewImage,
+          model: ReviewImages,
           attributes: ["id", "url"],
         },
       ],
@@ -78,7 +78,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
     const existingReview = await Review.findByPk(reviewId, {
       include: [
         {
-          model: ReviewImage,
+          model: ReviewImages,
           attributes: imageAttributes,
         },
       ],
@@ -98,7 +98,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
       });
     }
 
-    const reviewImages = ReviewImage.findAll({
+    const reviewImages = ReviewImages.findAll({
       where: { reviewId },
     });
 
@@ -110,7 +110,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
     }
 
     // Now create the new image
-    const newImage = await ReviewImage.create({
+    const newImage = await ReviewImages.create({
       url,
       reviewId,
     });

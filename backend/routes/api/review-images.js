@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const { requireAuth } = require("../../utils/auth");
-const { Review, ReviewImage } = require("../../db/models");
+const { Review, ReviewImages } = require("../../db/models");
 
 // Add an image to a review based on the review's id
 // /api/reviews/:reviewId/images
@@ -24,7 +24,7 @@ router.post("/", requireAuth, async (req, res, next) => {
     const existingReview = await Review.findByPk(reviewId, {
       include: [
         {
-          model: ReviewImage,
+          model: ReviewImages,
           attributes: imageAttributes,
         },
       ],
@@ -53,7 +53,7 @@ router.post("/", requireAuth, async (req, res, next) => {
       return next(err);
     }
 
-    const newImage = await ReviewImage.create({
+    const newImage = await ReviewImages.create({
       url,
       reviewId,
     });
@@ -75,7 +75,9 @@ router.delete("/:imageId", requireAuth, async (req, res, next) => {
 
   try {
     const existingReview = await Review.findByPk(reviewId, {
-      include: [{ model: ReviewImage, where: { id: imageId }, required: true }],
+      include: [
+        { model: ReviewImages, where: { id: imageId }, required: true },
+      ],
     });
 
     // check if review exists
@@ -99,7 +101,7 @@ router.delete("/:imageId", requireAuth, async (req, res, next) => {
       return next(err);
     }
 
-    const image = await ReviewImage.findByPk(imageId);
+    const image = await ReviewImages.findByPk(imageId);
     if (!image) {
       const err = new Error("Review Image couldn't be found");
       err.status = 404;

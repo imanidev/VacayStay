@@ -1,5 +1,5 @@
 const express = require("express");
-const { SpotImage, Spot } = require("../../db/models");
+const { SpotImages, Spot } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.delete("/:imageId", requireAuth, async (req, res, next) => {
     const spot = await Spot.findByPk(spotId, {
       include: [
         {
-          model: SpotImage,
+          model: SpotImages,
           where: { id: imageId },
           required: true,
         },
@@ -33,7 +33,7 @@ router.delete("/:imageId", requireAuth, async (req, res, next) => {
     }
 
     // delete the image
-    const image = await SpotImage.findByPk(imageId);
+    const image = await SpotImages.findByPk(imageId);
     if (!image) {
       const err = new Error("Spot Image couldn't be found");
       err.status = 404;
