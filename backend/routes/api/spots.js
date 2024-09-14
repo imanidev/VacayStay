@@ -1,6 +1,13 @@
 const router = require("express").Router();
 const { Op } = require("sequelize");
-const { Spot, SpotImage, User, Review, Sequelize } = require("../../db/models");
+const {
+  Spot,
+  SpotImage,
+  User,
+  Review,
+  Sequelize,
+  ReviewImage,
+} = require("../../db/models");
 const bookingsRouter = require("./booking");
 const reviewsRouter = require("./reviews");
 const { requireAuth } = requireAuth("../../utils/auth.js");
@@ -174,6 +181,35 @@ router.get("/:spotId", async (req, res, next) => {
   }
 });
 
+// Get all reviews for a spot
+// /api/spots/:spotId/reviews
+router.get("/:spotId/reviews", async (req, res, next) => {
+  const spotId = req.params.spotId;
+  try {
+    const spot = await Spot.findByPk(spotId);
+    if (!spot) {
+      return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    const spotReviews = await Review.findAll({
+      where: { spotId },
+      include: [
+        {
+          model: User,
+          attributes: ["id", "firstName", "lastName"],
+        },
+        {
+          model: ReviewImage,
+          attributes: ["id", "url"],
+        },
+      ],
+    });
+    res.json(spotReviews);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // Create a spot
 // /api/spots
 router.post("/", requireAuth, async (req, res, next) => {
@@ -243,6 +279,55 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
     });
 
     res.status(201).json(newSpotImage);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Create a review for a spot based on spot id
+// /api/spots/:spotId/reviews
+router.post("/:spotId/reviews", requireAuth, async (req, res, next) => {
+  const spotId = req.params.spotId;
+  const { review, stars } = req.body;
+  // get the userId to add the review. Comes from restoreUser middleware
+  const uid = req.user.id;
+
+  // 400 Status for body errors
+  // Note: we'll use express-validator to validate the request body
+  // This has been handled in "../../utils/validation.js"
+
+  try {
+    // check if spot exists
+    const spot = await Spot.findByPk(spotId);
+
+    if (!spot) {
+      return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    // user can not review their own spot
+    if (spot.ownerId === uid) {
+      return res
+        .status(403)
+        .json({ message: "Forbidden: Can not review your own spot" });
+    }
+
+    // check if review already exists
+    const existingReview = await Review.findOne({
+      where: { spotId, userId: uid },
+    });
+    if (existingReview) {
+      return res
+        .status(403)
+        .json({ message: "User already has a review for this spot" });
+    }
+
+    const newReview = await Review.create({
+      spotId,
+      userId: uid,
+      review,
+      stars,
+    });
+    res.status(201).json(newReview);
   } catch (error) {
     next(error);
   }
