@@ -11,6 +11,49 @@ const {
 const bookingsRouter = require("./booking");
 const reviewsRouter = require("./reviews");
 const { requireAuth } = requireAuth("../../utils/auth.js");
+const { check } = require("express-validator");
+const { handleValidationErrors } = require("../../utils/validation");
+
+// validate spot body
+const validateSpot = [
+  check("address")
+    .exists({ checkFalsy: true })
+    .withMessage("Street address is required"),
+  check("city").exists({ checkFalsy: true }).withMessage("City is required"),
+  check("state").exists({ checkFalsy: true }).withMessage("State is required"),
+  check("country")
+    .exists({ checkFalsy: true })
+    .withMessage("Country is required"),
+  check("lat")
+    .exists({ checkFalsy: true })
+    .isFloat({ min: -90, max: 90 })
+    .withMessage("Latitude is not valid"),
+  check("lng")
+    .exists({ checkFalsy: true })
+    .isFloat({ min: -180, max: 180 })
+    .withMessage("Longitude is not valid"),
+  check("name").exists({ checkFalsy: true }).withMessage("Name is required"),
+  check("description")
+    .exists({ checkFalsy: true })
+    .withMessage("Description is required"),
+  check("price")
+    .exists({ checkFalsy: true })
+    .isFloat({ min: 0 })
+    .withMessage("Price per day is required"),
+  handleValidationErrors,
+];
+
+// check validation for reviews
+const validateReview = [
+  check("review")
+    .exists({ checkFalsy: true })
+    .withMessage("Review text is required"),
+  check("stars")
+    .exists({ checkFalsy: true })
+    .isInt({ min: 1, max: 5 })
+    .withMessage("Stars must be an integer from 1 to 5"),
+  handleValidationErrors,
+];
 
 // CRUD Routes to manage Spots, SpotImages, Reviews, Bookings
 
@@ -212,7 +255,7 @@ router.get("/:spotId/reviews", async (req, res, next) => {
 
 // Create a spot
 // /api/spots
-router.post("/", requireAuth, async (req, res, next) => {
+router.post("/", requireAuth, validateSpot, async (req, res, next) => {
   // pass in ownerId from restoreUser middleware
   const ownerId = req.user.id;
   const { address, city, state, country, lat, lng, name, description, price } =
@@ -286,57 +329,60 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
 
 // Create a review for a spot based on spot id
 // /api/spots/:spotId/reviews
-router.post("/:spotId/reviews", requireAuth, async (req, res, next) => {
-  const spotId = req.params.spotId;
-  const { review, stars } = req.body;
-  // get the userId to add the review. Comes from restoreUser middleware
-  const uid = req.user.id;
+router.post(
+  "/:spotId/reviews",
+  requireAuth,
+  validateReview,
+  async (req, res, next) => {
+    const spotId = req.params.spotId;
+    const { review, stars } = req.body;
+    // get the userId to add the review. Comes from restoreUser middleware
+    const uid = req.user.id;
 
-  // 400 Status for body errors
-  // Note: we'll use express-validator to validate the request body
-  // This has been handled in "../../utils/validation.js"
+    // 400 Status for body errors
 
-  try {
-    // check if spot exists
-    const spot = await Spot.findByPk(spotId);
+    try {
+      // check if spot exists
+      const spot = await Spot.findByPk(spotId);
 
-    if (!spot) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
+      if (!spot) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
+      }
+
+      // user can not review their own spot
+      if (spot.ownerId === uid) {
+        return res
+          .status(403)
+          .json({ message: "Forbidden: Can not review your own spot" });
+      }
+
+      // check if review already exists
+      const existingReview = await Review.findOne({
+        where: { spotId, userId: uid },
+      });
+      if (existingReview) {
+        return res
+          .status(403)
+          .json({ message: "User already has a review for this spot" });
+      }
+
+      const newReview = await Review.create({
+        spotId,
+        userId: uid,
+        review,
+        stars,
+      });
+      res.status(201).json(newReview);
+    } catch (error) {
+      next(error);
     }
-
-    // user can not review their own spot
-    if (spot.ownerId === uid) {
-      return res
-        .status(403)
-        .json({ message: "Forbidden: Can not review your own spot" });
-    }
-
-    // check if review already exists
-    const existingReview = await Review.findOne({
-      where: { spotId, userId: uid },
-    });
-    if (existingReview) {
-      return res
-        .status(403)
-        .json({ message: "User already has a review for this spot" });
-    }
-
-    const newReview = await Review.create({
-      spotId,
-      userId: uid,
-      review,
-      stars,
-    });
-    res.status(201).json(newReview);
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 // Edit a spot
 // /api/spots/:spotId
 // Also requires proper authorization in addition to authentication
-router.put("/:spotId", requireAuth, async (req, res, next) => {
+router.put("/:spotId", requireAuth, validateSpot, async (req, res, next) => {
   const spotId = req.params.spotId;
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;

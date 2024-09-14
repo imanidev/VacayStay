@@ -10,6 +10,15 @@ router.post("/", requireAuth, async (req, res, next) => {
   const uid = req.user.id;
   const { url } = req.body;
 
+  if (!url) {
+    return res.status(400).json({
+      message: "Validation error",
+      errors: {
+        url: "Url is required",
+      },
+    });
+  }
+
   try {
     // check if review exists
     const existingReview = await Review.findByPk(reviewId, {

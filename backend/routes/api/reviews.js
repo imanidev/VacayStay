@@ -1,7 +1,20 @@
 const { requireAuth } = require("../../utils/auth");
 const { User, Review, Spot, ReviewImage } = require("../../db/models");
-
+const { check } = require("express-validator");
+const { handleValidationErrors } = require("../../utils/validation");
 const router = require("express").Router();
+
+// check validation for reviews
+const validateReview = [
+  check("review")
+    .exists({ checkFalsy: true })
+    .withMessage("Review text is required"),
+  check("stars")
+    .exists({ checkFalsy: true })
+    .isInt({ min: 1, max: 5 })
+    .withMessage("Stars must be an integer from 1 to 5"),
+  handleValidationErrors,
+];
 
 // Get the reviews of the current user
 // /api/reviews/current ~ not /api/reviews/:userId
@@ -111,37 +124,42 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
 // Edit a review
 // /api/reviews/:reviewId
 // Also requires proper authorization in addition to authentication
-router.put("/:reviewId", requireAuth, async (req, res, next) => {
-  const reviewId = req.params.reviewId;
-  const uid = req.user.id;
+router.put(
+  "/:reviewId",
+  requireAuth,
+  validateReview,
+  async (req, res, next) => {
+    const reviewId = req.params.reviewId;
+    const uid = req.user.id;
 
-  const { review, stars } = req.body;
+    const { review, stars } = req.body;
 
-  // 400 Status for body errors
-  // Note: we'll use express-validator to validate the request body
-  // This has been handled in "../../utils/validation.js"
+    // 400 Status for body errors
+    // Note: we'll use express-validator to validate the request body
+    // This has been handled in "../../utils/validation.js"
 
-  try {
-    // check if review exists
-    const existingReview = await Review.findByPk(reviewId);
+    try {
+      // check if review exists
+      const existingReview = await Review.findByPk(reviewId);
 
-    if (!existingReview) {
-      return res.status(404).json({ message: "Review couldn't be found" });
+      if (!existingReview) {
+        return res.status(404).json({ message: "Review couldn't be found" });
+      }
+
+      // check if review belongs to user
+      if (existingReview.userId !== uid) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
+
+      await existingReview.update({ review, stars });
+      await existingReview.save();
+
+      res.status(200).json(existingReview);
+    } catch (error) {
+      next(error);
     }
-
-    // check if review belongs to user
-    if (existingReview.userId !== uid) {
-      return res.status(403).json({ message: "Forbidden" });
-    }
-
-    await existingReview.update({ review, stars });
-    await existingReview.save();
-
-    res.status(200).json(existingReview);
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 // Delete a review
 // /api/reviews/:reviewId
