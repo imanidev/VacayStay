@@ -1,10 +1,14 @@
 const router = require("express").Router();
 const { Op } = require("sequelize");
 const { Spot, SpotImage, User, Review, Sequelize } = require("../../db/models");
-const { route } = require("./session");
+const bookingsRouter = require("./booking");
+const reviewsRouter = require("./reviews");
 const { requireAuth } = requireAuth("../../utils/auth.js");
 
 // CRUD Routes to manage Spots, SpotImages, Reviews, Bookings
+
+router.use("/:spotId/bookings", bookingsRouter);
+router.use("/:spotId/reviews", reviewsRouter);
 
 // Get all Spots
 // /api/spots
