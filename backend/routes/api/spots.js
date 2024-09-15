@@ -104,7 +104,7 @@ router.get("/", async (req, res, next) => {
 
     // get average rating for each spot
     const spotIds = spots.map((spot) => spot.id);
-    const avgRatings = await Spot.findAll({
+    const avgRatings = await Review.findAll({
       where: {
         spotId: {
           [Op.in]: spotIds,
