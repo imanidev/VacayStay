@@ -8,7 +8,7 @@ const {
   Sequelize,
   ReviewImages,
 } = require("../../db/models");
-const bookingsRouter = require("./booking");
+const bookingsRouter = require("./bookings");
 const reviewsRouter = require("./reviews");
 const { requireAuth } = requireAuth("../../utils/auth.js");
 const { check } = require("express-validator");
