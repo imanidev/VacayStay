@@ -1,5 +1,7 @@
 # VacayStay
 
+<a href="https://vacaystay-vez0.onrender.com" target="_blank">Link to API</a>
+
 ## Database Schema Design
 
 ![db-schema](images/db-schema.png)
