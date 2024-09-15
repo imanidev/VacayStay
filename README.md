@@ -1,6 +1,7 @@
 # VacayStay
 
-<a href="https://vacaystay-vez0.onrender.com" target="_blank">Link to API</a>
+[Link to API](https://vacaystay-vez0.onrender.com){:target="_blank"}
+
 
 ## Database Schema Design
 
