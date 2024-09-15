@@ -65,16 +65,27 @@ app.use((err, _req, _res, next) => {
   next(err);
 });
 
-// Error formatter
+// Error formatting
+/*
+formatting all the errors before returning a JSON response. It will include the error message, the error messages as a JSON object with key-value pairs, and the error stack trace (if the environment is in development) with the status code of the error message.
+*/
 app.use((err, _req, res, _next) => {
   res.status(err.status || 500);
   console.error(err);
-  res.json({
-    title: err.title || "Server Error",
-    message: err.message,
-    errors: err.errors,
-    stack: isProduction ? null : err.stack,
-  });
+
+  if (isProduction) {
+    res.json({
+      message: err.message,
+      errors: err.errors,
+    });
+  } else {
+    res.json({
+      title: err.title || "Server Error",
+      message: err.message,
+      errors: err.errors,
+      stack: err.stack,
+    });
+  }
 });
 
 module.exports = app;
