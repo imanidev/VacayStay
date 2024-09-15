@@ -463,4 +463,4 @@ router.delete("/:spotId", requireAuth, async (req, res, next) => {
   }
 });
 
-router.module.exports = router;
+module.exports = router;
