@@ -10,7 +10,7 @@ const {
 } = require("../../db/models");
 const bookingsRouter = require("./bookings");
 const reviewsRouter = require("./reviews");
-const { requireAuth } = requireAuth("../../utils/auth.js");
+const { requireAuth } = require("../../utils/auth.js");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 
