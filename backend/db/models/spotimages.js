@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class SpotImages extends Model {
     /**
@@ -11,36 +9,37 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // SpotImage belongs to a spot
-      SpotImages.belongsTo(models.Spot, { foreignKey: 'spotId', onDelete: 'CASCADE' });
+      SpotImages.belongsTo(models.Spot, {
+        foreignKey: "spotId",
+        onDelete: "CASCADE",
+      });
     }
   }
-  SpotImages.init({
-    spotId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+  SpotImages.init(
+    {
+      spotId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Spots",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+      },
+      url: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      preview: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
-    url: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    preview: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW
+    {
+      sequelize,
+      modelName: "SpotImages",
     }
-  }, {
-    sequelize,
-    modelName: 'SpotImages',
-  });
+  );
   return SpotImages;
 };

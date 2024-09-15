@@ -29,23 +29,24 @@ module.exports = {
         username: {
           type: Sequelize.STRING,
         },
-        hashedPassowrd: {
+        hashedPassword: {
           type: Sequelize.STRING,
         },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         },
         updatedAt: {
           allowNull: false,
           type: Sequelize.DATE,
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         },
       },
       options
     );
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Users";
-    await queryInterface.dropTable(options);
+    await queryInterface.dropTable("Users", options);
   },
 };

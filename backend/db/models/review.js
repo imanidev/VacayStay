@@ -29,10 +29,20 @@ module.exports = (sequelize, DataTypes) => {
       spotId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: "Spots",
+          key: "id",
+        },
+        onDelete: "CASCADE",
       },
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onDelete: "CASCADE",
       },
       review: {
         type: DataTypes.STRING,
@@ -41,16 +51,6 @@ module.exports = (sequelize, DataTypes) => {
       stars: {
         type: DataTypes.FLOAT,
         allowNull: false,
-      },
-      createdAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
       },
     },
     {

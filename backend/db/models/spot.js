@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // Spot belongs to a user (owner)
       Spot.belongsTo(models.User, {
         foreignKey: "ownerId",
+        as: "Owner",
         onDelete: "CASCADE",
       });
       // Spot can have many reviews, bookings, and spot images
@@ -33,6 +34,11 @@ module.exports = (sequelize, DataTypes) => {
       ownerId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onDelete: "CASCADE",
       },
       address: {
         type: DataTypes.STRING,
@@ -72,16 +78,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       avgRating: DataTypes.FLOAT,
       previewImage: DataTypes.STRING,
-      createdAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
     },
     {
       sequelize,

@@ -1,53 +1,65 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 let options = {};
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA;
 }
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Reviews', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
+    await queryInterface.createTable(
+      "Reviews",
+      {
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.INTEGER,
+        },
+        spotId: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: "Spots",
+            key: "id",
+          },
+          onDelete: "CASCADE",
+        },
+        userId: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: "Users",
+            key: "id",
+          },
+          onDelete: "CASCADE",
+        },
+        review: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        stars: {
+          type: Sequelize.FLOAT,
+          allowNull: false,
+        },
+        createdAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        },
       },
-      spotId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: { model: 'Spot', key: 'id' },
-        onDelete: 'CASCADE'
-      },
-      userId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: { model: 'User', key: 'id' },
-        onDelete: 'CASCADE'
-      },
-      review: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      stars: {
-        type: Sequelize.FLOAT,
-        allowNull: false
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    }, options);
+      options
+    );
   },
 
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Reviews';
+    options.tableName = "Reviews";
     await queryInterface.dropTable(options);
-  }
+  },
 };
