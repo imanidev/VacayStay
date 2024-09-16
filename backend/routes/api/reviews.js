@@ -79,7 +79,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
       include: [
         {
           model: ReviewImages,
-          attributes: imageAttributes,
+          attributes: ["id", "url"],
         },
       ],
     });

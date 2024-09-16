@@ -159,72 +159,88 @@ router.get("/current", requireAuth, async (req, res, next) => {
 });
 
 // get details of a Spot from an id
-// /api/spots/:spotId
 router.get("/:spotId", async (req, res, next) => {
-  const spotId = req.params.spotId;
+  const spotId = Number(req.params.spotId);
+  let avgStarRating;
+  const numReviews = await Review.count({
+    where: { spotId },
+  });
+
+  const reviews = await Review.findAll({
+    where: { spotId },
+    attributes: ["stars"],
+  });
+
+  if (reviews.length > 0) {
+    const totalStars = reviews.reduce((acc, review) => acc + review.stars, 0);
+    avgStarRating = totalStars / numReviews;
+  } else {
+    // Handle case where there are no reviews
+    avgStarRating = 0;
+  }
 
   try {
-    // Get the spot with the specified id
-    // returns a Spot object or "null" to be used later
-    const spot = await Spot.findByPk(spotId, {
+    const preSpot = await Spot.findByPk(spotId, {
+      attributes: [
+        "id",
+        "ownerId",
+        "address",
+        "city",
+        "state",
+        "country",
+        "lat",
+        "lng",
+        "name",
+        "description",
+        "price",
+      ],
       include: [
         {
-          model: SpotImages,
-          attributes: ["id", "url", "preview"],
-          as: "SpotImages",
-        },
-        {
           model: User,
-          attributes: ["id", "firstName", "lastName"],
+          attributes: ["id", "firstName", "lastName"], // only has id, firstName, lastName
           as: "Owner",
         },
         {
-          model: Review,
-          attributes: [],
+          model: SpotImage,
+          attributes: imageAttributes,
+          as: "SpotImages",
         },
       ],
     });
 
-    if (!spot) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
+    // preSpot.avgRating = avgStarRating;
+
+    if (!preSpot) {
+      //spot not found
+      const err = new Error("Spot couldn't be found");
+      err.status = 404;
+      return next(err);
     }
-
-    // get average rating for each spot
-    const averageStarRatingResult = await Review.findAll({
-      where: { spotId },
-      attributes: [
-        [Sequelize.fn("AVG", Sequelize.col("stars")), "avgStarRating"],
-      ],
-    });
-
-    // get count of reviews for spot
-    const numReviews = await Review.count({ where: { spotId } });
-
-    // Extract average star rating from the result
-    const avgStarRating = averageStarRatingResult
-      ? averageStarRatingResult.get("avgStarRating")
-      : null;
-
-    res.json({
-      id: spot.id,
-      address: spot.address,
-      city: spot.city,
-      state: spot.state,
-      country: spot.country,
-      lat: spot.lat,
-      lng: spot.lng,
-      name: spot.name,
-      description: spot.description,
+    const spotResult = {
+      id: preSpot.id,
+      ownerId: preSpot.ownerId,
+      address: preSpot.address,
+      city: preSpot.city,
+      state: preSpot.state,
+      country: preSpot.country,
+      lat: preSpot.lat,
+      lng: preSpot.lng,
+      name: preSpot.name,
+      description: preSpot.description,
+      price: preSpot.price,
+      createdAt: preSpot.createdAt,
+      updatedAt: preSpot.updatedAt,
       numReviews,
-      avgStarRating: avgStarRating,
-      SpotImages: spot.SpotImages,
-      Owner: spot.Owner,
-    });
-  } catch (error) {
-    next(error);
+      avgStarRating,
+      SpotImages: preSpot.SpotImages,
+      Owner: preSpot.Owner,
+    };
+
+    res.json(spotResult);
+  } catch (e) {
+    next(e);
   }
 });
-
 // Get all reviews for a spot
 // /api/spots/:spotId/reviews
 router.get("/:spotId/reviews", async (req, res, next) => {
@@ -363,7 +379,7 @@ router.post(
       });
       if (existingReview) {
         return res
-          .status(403)
+          .status(500)
           .json({ message: "User already has a review for this spot" });
       }
 
@@ -454,7 +470,7 @@ router.delete("/:spotId", requireAuth, async (req, res, next) => {
       });
     }
 
-    await spot.destroy();
+    spot.destroy();
 
     res.status(200).json({
       message: "Successfully deleted",
@@ -488,7 +504,7 @@ router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
         include: [
           {
             model: User,
-            attributes: userAttributes, // only has id, firstName, lastName
+            attributes: ["id", "firstName", "lastName"], // only has id, firstName, lastName
             as: "User",
           },
         ],
@@ -506,6 +522,6 @@ router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
 
+});
 module.exports = router;
