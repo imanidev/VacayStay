@@ -73,6 +73,11 @@ app.use((err, _req, res, _next) => {
   res.status(err.status || 500);
   console.error(err);
 
+  if (res.status === 401) {
+    res.status(401).json({
+      message: "Invalid Credentials",
+    });
+  }
   if (isProduction) {
     res.json({
       message: err.message,
