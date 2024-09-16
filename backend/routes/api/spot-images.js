@@ -10,7 +10,7 @@ router.delete("/:imageId", requireAuth, async (req, res, next) => {
 
   try {
     // Find the SpotImage with its associated Spot
-    const image = await SpotImage.findByPk(imageId, {
+    const image = await SpotImages.findByPk(imageId, {
       include: {
         model: Spot,
         attributes: ["ownerId"],
