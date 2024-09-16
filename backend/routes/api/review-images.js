@@ -70,48 +70,37 @@ router.post("/", requireAuth, async (req, res, next) => {
 // Delete a review image
 // /api/reviews/:reviewId/images/:imageId
 router.delete("/:imageId", requireAuth, async (req, res, next) => {
-  const { reviewId, imageId } = req.params;
-  const uid = req.user.id;
+  const imageId = req.params.imageId;
+  const userId = req.user.id;
 
   try {
-    const existingReview = await Review.findByPk(reviewId, {
-      include: [
-        { model: ReviewImages, where: { id: imageId }, required: true },
-      ],
+    // Find the ReviewImage with its associated Review
+    const image = await ReviewImages.findByPk(imageId, {
+      include: {
+        model: Review,
+        attributes: ["userId"],
+      },
     });
 
-    // check if review exists
-    if (!existingReview) {
-      const err = new Error("Review couldn't be found");
-      err.status = 404;
-      return next(err);
-    }
-
-    // check if review belongs to user
-    if (existingReview.userId !== uid) {
-      const err = new Error("Forbidden");
-      err.status = 403;
-      return next(err);
-    }
-
-    // check if image belongs to review
-    if (existingReview.Images.length === 0) {
-      const err = new Error("Review Image couldn't be found");
-      err.status = 404;
-      return next(err);
-    }
-
-    const image = await ReviewImages.findByPk(imageId);
+    // Return 404 if the image doesn't exist
     if (!image) {
-      const err = new Error("Review Image couldn't be found");
-      err.status = 404;
-      return next(err);
+      return res
+        .status(404)
+        .json({ message: "Review Image couldn't be found" });
     }
 
+    // Check if the current user is the owner of the review
+    if (image.Review.userId !== userId) {
+      return res
+        .status(403)
+        .json({ message: "Forbidden: You do not own this review" });
+    }
+
+    // Delete the image
     await image.destroy();
-    return res.json({ message: "Successfully deleted" });
+    return res.status(200).json({ message: "Successfully deleted" });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 });
 

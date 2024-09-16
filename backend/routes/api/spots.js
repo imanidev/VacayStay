@@ -56,6 +56,32 @@ const validateReview = [
   handleValidationErrors,
 ];
 
+const validateBooking = [
+  // Check if startDate exists
+  check("startDate")
+    .exists({ checkFalsy: true })
+    .withMessage("Start date is required"),
+
+  // Check if endDate exists
+  check("endDate")
+    .exists({ checkFalsy: true })
+    .withMessage("End date is required"),
+
+  // Custom validation to check if startDate is before endDate
+  check("startDate").custom((value, { req }) => {
+    const startDate = new Date(value);
+    const endDate = new Date(req.body.endDate);
+
+    if (startDate >= endDate) {
+      throw new Error("Start date must be before end date");
+    }
+
+    // If the validation passes, return true
+    return true;
+  }),
+  handleValidationErrors,
+];
+
 // CRUD Routes to manage Spots, SpotImages, Reviews, Bookings
 
 router.use("/:spotId/bookings", bookingsRouter);
@@ -160,7 +186,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
 
 // get details of a Spot from an id
 router.get("/:spotId", async (req, res, next) => {
-  const spotId = Number(req.params.spotId);
+  const spotId = req.params.spotId;
   let avgStarRating;
   const numReviews = await Review.count({
     where: { spotId },
@@ -201,8 +227,20 @@ router.get("/:spotId", async (req, res, next) => {
           as: "Owner",
         },
         {
-          model: SpotImage,
-          attributes: imageAttributes,
+          model: SpotImages,
+          attributes: [
+            "id",
+            "ownerId",
+            "address",
+            "city",
+            "state",
+            "country",
+            "lat",
+            "lng",
+            "name",
+            "description",
+            "price",
+          ],
           as: "SpotImages",
         },
       ],
@@ -344,6 +382,71 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
   }
 });
 
+// create a booking from a spot based on spot id
+router.post(
+  "/:spotId/bookings",
+  requireAuth,
+  validateBooking,
+  async (req, res, next) => {
+    const ownerId = req.user.id;
+    const { startDate, endDate } = req.body;
+    const spotId = req.params.spotId;
+    try {
+      // check if the spot exists
+      const spot = await Spot.findByPk(spotId);
+      if (!spot) {
+        const err = new Error("Spot Image couldn't be found");
+        err.status = 404;
+        next(err);
+      }
+
+      // check if the user is the owner of the spot
+      if (spot.ownerId === ownerId) {
+        const err = new Error("Spot must not belong to user");
+        err.status = 403;
+        next(err);
+      }
+
+      // booking conflicts with any existing booking
+      const bookingConflicts = await Booking.findAll({
+        where: {
+          spotId,
+          [Op.or]: [
+            {
+              startDate: {
+                [Op.between]: [startDate, endDate],
+              },
+            },
+            {
+              endDate: {
+                [Op.between]: [startDate, endDate],
+              },
+            },
+          ],
+        },
+      });
+
+      if (bookingConflicts.length > 0) {
+        const err = new Error(
+          "Sorry, this spot is already booked for the specified dates"
+        );
+        err.status = 403;
+        return next(err);
+      }
+
+      const booking = await Booking.create({
+        spotId,
+        userId: ownerId,
+        startDate,
+        endDate,
+      });
+      res.status(201).json(booking);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
 // Create a review for a spot based on spot id
 // /api/spots/:spotId/reviews
 router.post(
@@ -482,7 +585,7 @@ router.delete("/:spotId", requireAuth, async (req, res, next) => {
 
 // get all bookings for a spot based on spot id
 router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
-  const spotId = Number(req.params.spotId);
+  const spotId = req.params.spotId;
   const uid = req.user.id;
 
   try {
@@ -522,6 +625,5 @@ router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-
 });
 module.exports = router;

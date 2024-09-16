@@ -227,7 +227,7 @@ router.delete("/:bookingId", requireAuth, async (req, res) => {
 
   try {
     // Find the booking by ID
-    const booking = await Bookings.findByPk(bookingId, {
+    const booking = await Booking.findByPk(bookingId, {
       include: {
         model: Spot,
         attributes: ["ownerId"],
@@ -265,66 +265,6 @@ router.delete("/:bookingId", requireAuth, async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });
-  }
-});
-
-// create a booking from a spot based on spot id
-router.post("/", requireAuth, validateBooking, async (req, res, next) => {
-  const ownerId = req.user.id;
-  const { startDate, endDate } = req.body;
-  const spotId = Number(req.params.spotId);
-  try {
-    // check if the spot exists
-    const spot = await Spot.findByPk(spotId);
-    if (!spot) {
-      const err = new Error("Spot Image couldn't be found");
-      err.status = 404;
-      next(err);
-    }
-
-    // check if the user is the owner of the spot
-    if (spot.ownerId === ownerId) {
-      const err = new Error("Spot must not belong to user");
-      err.status = 403;
-      next(err);
-    }
-
-    // booking conflicts with any existing booking
-    const bookingConflicts = await Booking.findAll({
-      where: {
-        spotId,
-        [Op.or]: [
-          {
-            startDate: {
-              [Op.between]: [startDate, endDate],
-            },
-          },
-          {
-            endDate: {
-              [Op.between]: [startDate, endDate],
-            },
-          },
-        ],
-      },
-    });
-
-    if (bookingConflicts.length > 0) {
-      const err = new Error(
-        "Sorry, this spot is already booked for the specified dates"
-      );
-      err.status = 403;
-      return next(err);
-    }
-
-    const booking = await Booking.create({
-      spotId,
-      userId: ownerId,
-      startDate,
-      endDate,
-    });
-    res.status(201).json(booking);
-  } catch (e) {
-    next(e);
   }
 });
 
