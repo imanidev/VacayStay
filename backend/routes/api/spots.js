@@ -324,7 +324,7 @@ router.get("/:spotId/reviews", async (req, res, next) => {
 
 // Create a spot
 // /api/spots
-router.post("/", requireAuth, async (req, res, next) => {
+router.post("/", requireAuth, validateSpot, async (req, res, next) => {
   const ownerId = req.user.id;
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
@@ -384,13 +384,16 @@ router.post("/", requireAuth, async (req, res, next) => {
       description,
       price,
     });
+
+    // If spot creation fails
     if (!spot) {
       const err = new Error("Spot couldn't be created");
       err.status = 404;
       return next(err);
     }
 
-    const formattedSpot = {
+    // Send the response with status 201 Created
+    res.status(201).json({
       id: spot.id,
       ownerId: spot.ownerId,
       address: spot.address,
@@ -404,10 +407,7 @@ router.post("/", requireAuth, async (req, res, next) => {
       price: spot.price,
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
-    };
-
-    // Send the response with status 201 Created
-    res.status(201).json(formattedSpot);
+    });
   } catch (e) {
     next(e);
   }
