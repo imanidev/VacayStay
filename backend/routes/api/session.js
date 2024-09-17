@@ -29,6 +29,7 @@ router.post("/", validateLogin, async (req, res, next) => {
         email: credential,
       },
     },
+    attributes: ["id", "firstName", "lastName", "email", "username", "hashedPassword"],
   });
 
   if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
