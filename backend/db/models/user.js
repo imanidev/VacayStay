@@ -1,13 +1,10 @@
 "use strict";
 const { Model, Validator } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
+      // Define associations
       User.hasMany(models.Spot, {
         foreignKey: "ownerId",
         onDelete: "CASCADE",
@@ -24,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   User.init(
     {
       username: {
@@ -39,8 +37,14 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      firstName: DataTypes.STRING,
-      lastName: DataTypes.STRING,
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false, // Ensure firstName is required
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false, // Ensure lastName is required
+      },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -63,10 +67,11 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
       defaultScope: {
         attributes: {
-          exclude: ["hashedPassword", "email", "createdAt", "updatedAt"],
+          exclude: ["hashedPassword", "createdAt", "updatedAt"], // Only exclude password and timestamps
         },
       },
     }
   );
+
   return User;
 };
