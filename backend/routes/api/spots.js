@@ -93,39 +93,60 @@ router.use("/:spotId/reviews", reviewsRouter);
 // Get all Spots
 // /api/spots
 router.get("/", async (req, res) => {
-  let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
-    req.query;
+  let {
+    page = 1,
+    size = 20,
+    maxLat,
+    minLat,
+    maxLng,
+    minLng,
+    minPrice,
+    maxPrice,
+  } = req.query;
 
-  // Convert query parameters to proper types
-  page = parseInt(page) || 1; // Default to 1 if invalid or not provided
-  size = parseInt(size) || 20; // Default to 20 if invalid or not provided
-  minLat = minLat !== undefined ? parseFloat(minLat) : undefined;
-  maxLat = maxLat !== undefined ? parseFloat(maxLat) : undefined;
-  minLng = minLng !== undefined ? parseFloat(minLng) : undefined;
-  maxLng = maxLng !== undefined ? parseFloat(maxLng) : undefined;
-  minPrice = minPrice !== undefined ? parseFloat(minPrice) : undefined;
-  maxPrice = maxPrice !== undefined ? parseFloat(maxPrice) : undefined;
-
-  // Validation
   const errors = {};
-  if (isNaN(page) || page < 1)
-    errors.page = "Page must be greater than or equal to 1";
-  if (isNaN(size) || size < 1 || size > 20)
-    errors.size = "Size must be between 1 and 20";
-  if (minLat !== undefined && (isNaN(minLat) || minLat < -90 || minLat > 90))
-    errors.minLat = "Minimum latitude is invalid";
-  if (maxLat !== undefined && (isNaN(maxLat) || maxLat < -90 || maxLat > 90))
-    errors.maxLat = "Maximum latitude is invalid";
-  if (minLng !== undefined && (isNaN(minLng) || minLng < -180 || minLng > 180))
-    errors.minLng = "Minimum longitude is invalid";
-  if (maxLng !== undefined && (isNaN(maxLng) || maxLng < -180 || maxLng > 180))
-    errors.maxLng = "Maximum longitude is invalid";
-  if (minPrice !== undefined && (isNaN(minPrice) || minPrice < 0))
-    errors.minPrice = "Minimum price must be greater than or equal to 0";
-  if (maxPrice !== undefined && (isNaN(maxPrice) || maxPrice < 0))
-    errors.maxPrice = "Maximum price must be greater than or equal to 0";
 
-  // If there are errors, respond with a 400 status
+  // Convert to numbers for validation
+  page = Number(page);
+  size = Number(size);
+  minLat = Number(minLat);
+  maxLat = Number(maxLat);
+  minLng = Number(minLng);
+  maxLng = Number(maxLng);
+  minPrice = Number(minPrice);
+  maxPrice = Number(maxPrice);
+
+  // Validate 'page' and 'size'
+  if (page < 1) {
+    errors.page = "Page must be greater than or equal to 1";
+  }
+  if (size < 1) {
+    errors.size = "Size must be greater than or equal to 1";
+  }
+
+  // Validate latitude and longitude
+  if (minLat && (minLat < -90 || minLat > 90)) {
+    errors.minLat = "Minimum latitude is invalid";
+  }
+  if (maxLat && (maxLat < -90 || maxLat > 90)) {
+    errors.maxLat = "Maximum latitude is invalid";
+  }
+  if (minLng && (minLng < -180 || minLng > 180)) {
+    errors.minLng = "Minimum longitude is invalid";
+  }
+  if (maxLng && (maxLng < -180 || maxLng > 180)) {
+    errors.maxLng = "Maximum longitude is invalid";
+  }
+
+  // Validate prices
+  if (minPrice && minPrice < 0) {
+    errors.minPrice = "Minimum price must be greater than or equal to 0";
+  }
+  if (maxPrice && maxPrice < 0) {
+    errors.maxPrice = "Maximum price must be greater than or equal to 0";
+  }
+
+  // If there are errors, return 400 Bad Request with error details
   if (Object.keys(errors).length > 0) {
     return res.status(400).json({
       message: "Bad Request",
