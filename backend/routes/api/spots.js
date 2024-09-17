@@ -145,7 +145,7 @@ router.get("/", async (req, res) => {
     offset: (page - 1) * size,
     include: [
       {
-        model: SpotImage,
+        model: SpotImages,
         attributes: ["url", "preview"],
       },
       {
