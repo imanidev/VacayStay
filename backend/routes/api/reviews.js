@@ -4,7 +4,7 @@ const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const router = require("express").Router();
 
-// check validation for reviews
+// Check validation for reviews
 const validateReview = [
   check("review")
     .exists({ checkFalsy: true })
@@ -19,7 +19,6 @@ const validateReview = [
 // Get the reviews of the current user
 // /api/reviews/current ~ not /api/reviews/:userId
 router.get("/current", requireAuth, async (req, res, next) => {
-  // get the current user from restoreUser middleware
   const uid = req.user.id;
   try {
     const currentUserReviews = await Review.findAll({
@@ -74,7 +73,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
   }
 
   try {
-    // check if review exists
+    // Check if review exists
     const existingReview = await Review.findByPk(reviewId, {
       include: [
         {
@@ -84,38 +83,41 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
       ],
     });
 
-    // review doesn't exist
+    // Review doesn't exist
     if (!existingReview) {
       return res.status(404).json({
         message: "Review couldn't be found",
       });
     }
 
-    // review doesn't belong to user
+    // Review doesn't belong to user
     if (existingReview.userId !== uid) {
       return res.status(403).json({
         message: "Forbidden",
       });
     }
 
-    const reviewImages = ReviewImages.findAll({
+    // Check if maxed images - max of 10
+    const reviewImages = await ReviewImages.findAll({
       where: { reviewId },
     });
 
-    // check if maxed images - max of 10
     if (reviewImages.length >= 10) {
       return res.status(403).json({
         message: "Maximum number of images for this resource was reached",
       });
     }
 
-    // Now create the new image
+    // Create the new image
     const newImage = await ReviewImages.create({
       url,
       reviewId,
     });
 
-    res.status(201).json(newImage);
+    res.status(201).json({
+      id: newImage.id,
+      url: newImage.url,
+    });
   } catch (error) {
     next(error);
   }
@@ -134,19 +136,15 @@ router.put(
 
     const { review, stars } = req.body;
 
-    // 400 Status for body errors
-    // Note: we'll use express-validator to validate the request body
-    // This has been handled in "../../utils/validation.js"
-
     try {
-      // check if review exists
+      // Check if review exists
       const existingReview = await Review.findByPk(reviewId);
 
       if (!existingReview) {
         return res.status(404).json({ message: "Review couldn't be found" });
       }
 
-      // check if review belongs to user
+      // Check if review belongs to user
       if (existingReview.userId !== uid) {
         return res.status(403).json({ message: "Forbidden" });
       }
@@ -169,14 +167,14 @@ router.delete("/:reviewId", requireAuth, async (req, res, next) => {
   const uid = req.user.id;
 
   try {
-    // check if review exists
+    // Check if review exists
     const existingReview = await Review.findByPk(reviewId);
 
     if (!existingReview) {
       return res.status(404).json({ message: "Review couldn't be found" });
     }
 
-    // check if review belongs to user
+    // Check if review belongs to user
     if (existingReview.userId !== uid) {
       return res.status(403).json({ message: "Forbidden" });
     }
