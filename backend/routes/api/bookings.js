@@ -134,49 +134,41 @@ router.put("/:bookingId", requireAuth, async (req, res, next) => {
 
 // delete a booking
 router.delete("/:bookingId", requireAuth, async (req, res) => {
-  const bookingId = req.params.bookingId; // Corrected from req.params.id
-  const currentUserId = req.user.id; // Assuming you have current user info in req.user
+  const { bookingId } = req.params;
+  const userId = req.user.id;
 
   try {
-    // Find the booking by ID
-    const booking = await Booking.findByPk(bookingId, {
+    const booking = await Booking.findOne({
+      where: { id: bookingId },
       include: {
         model: Spot,
         attributes: ["ownerId"],
       },
     });
 
-    // If the booking is not found, return 404
     if (!booking) {
       return res.status(404).json({ message: "Booking couldn't be found" });
     }
 
-    // Check if the booking has started (you'll need to determine what field indicates this)
-    const currentDate = new Date();
-    if (currentDate >= booking.startDate) {
+    if (booking.userId !== userId && booking.Spot.ownerId !== userId) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    const today = new Date();
+    if (new Date(booking.startDate) <= today) {
       return res
         .status(403)
         .json({ message: "Bookings that have been started can't be deleted" });
     }
 
-    // Check if the booking belongs to the current user or if the spot owner is the current user
-    if (
-      booking.userId !== currentUserId &&
-      booking.Spot.ownerId !== currentUserId
-    ) {
-      return res
-        .status(403)
-        .json({ message: "Unauthorized to delete this booking" });
-    }
-
-    // Destroy the booking
     await booking.destroy();
 
-    // Send success response
     return res.status(200).json({ message: "Successfully deleted" });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Did not delete booking",
+      error: err.message,
+    });
   }
 });
 
