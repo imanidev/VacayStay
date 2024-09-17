@@ -146,21 +146,26 @@ router.delete("/:bookingId", requireAuth, async (req, res) => {
       },
     });
 
+    // If booking not found, return 404
     if (!booking) {
       return res.status(404).json({ message: "Booking couldn't be found" });
     }
 
+    // If the booking doesn't belong to the user or spot owner, return 403
     if (booking.userId !== userId && booking.Spot.ownerId !== userId) {
       return res.status(403).json({ message: "Forbidden" });
     }
 
     const today = new Date();
+
+    // If the booking has already started, return 403
     if (new Date(booking.startDate) <= today) {
-      return res
-        .status(403)
-        .json({ message: "Bookings that have been started can't be deleted" });
+      return res.status(403).json({
+        message: "Bookings that have been started can't be deleted",
+      });
     }
 
+    // Delete the booking and return success message with status 200
     await booking.destroy();
 
     return res.status(200).json({ message: "Successfully deleted" });
