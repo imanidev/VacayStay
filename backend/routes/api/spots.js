@@ -106,16 +106,6 @@ router.get("/", async (req, res) => {
 
   const errors = {};
 
-  // Convert to numbers for validation
-  page = Number(page);
-  size = Number(size);
-  minLat = Number(minLat);
-  maxLat = Number(maxLat);
-  minLng = Number(minLng);
-  maxLng = Number(maxLng);
-  minPrice = Number(minPrice);
-  maxPrice = Number(maxPrice);
-
   // Validate 'page' and 'size'
   if (page < 1) {
     errors.page = "Page must be greater than or equal to 1";
