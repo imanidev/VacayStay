@@ -1,0 +1,43 @@
+.profile-button {
+    background-color: #007bff;
+    /* Primary color */
+    color: white;
+    border: none;
+    border-radius: 50px;
+    /* Circular corners */
+    padding: 10px 20px;
+    /* Vertical and horizontal padding */
+    font-size: 16px;
+    /* Font size */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.2s;
+    /* Transition effects */
+    display: flex;
+    /* Flexbox for alignment */
+    align-items: center;
+    /* Center content vertically */
+}
+
+.profile-button:hover {
+    background-color: #0056b3;
+    /* Darker shade on hover */
+    transform: scale(1.05);
+    /* Slightly enlarge on hover */
+}
+
+.profile-button img {
+    border-radius: 50%;
+    /* Circular image */
+    width: 30px;
+    /* Image size */
+    height: 30px;
+    /* Image size */
+    margin-right: 10px;
+    /* Space between image and text */
+}
+
+.profile-button span {
+    font-weight: bold;
+    /* Bold text */
+}
