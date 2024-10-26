@@ -1,51 +1,58 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+/* frontend/src/components/Navigation/Navigation.css */
+
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
 }
 
-.navbar {
-    background-color: #333;
-    overflow: hidden;
+.nav-left {
+    flex: 1;
 }
 
-.navbar a {
-    float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 20px;
+.nav-link {
     text-decoration: none;
-    transition: background-color 0.3s;
+    color: #1B1B1B;
+    font-size: 18px;
 }
 
-.navbar a:hover {
-    background-color: #575757;
+.nav-link:hover {
+    text-decoration: underline;
 }
 
-.navbar a.active {
-    background-color: #28a745;
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    /* Adds space between buttons */
 }
 
-.navbar .logo {
-    font-size: 24px;
+.nav-right button {
+    background: #1B1B1B;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.nav-right button:hover {
+    background: #5c2a9d;
+}
+
+.create-stay-button {
+    margin-right: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #332d2b;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.25rem;
     font-weight: bold;
-    padding: 14px 20px;
-    float: left;
 }
 
-.navbar-right {
-    float: right;
-}
-
-@media screen and (max-width: 600px) {
-    .navbar a {
-        float: none;
-        display: block;
-        text-align: left;
-    }
-
-    .navbar-right {
-        float: none;
-    }
+.-hut-button:hover {
+    background-color: #8b4;
 }

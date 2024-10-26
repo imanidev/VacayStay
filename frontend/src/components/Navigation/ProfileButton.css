@@ -1,43 +1,146 @@
-.profile-button {
-    background-color: #007bff;
-    /* Primary color */
-    color: white;
-    border: none;
-    border-radius: 50px;
-    /* Circular corners */
-    padding: 10px 20px;
-    /* Vertical and horizontal padding */
-    font-size: 16px;
-    /* Font size */
-    cursor: pointer;
-    /* Pointer cursor on hover */
-    transition: background-color 0.3s, transform 0.2s;
-    /* Transition effects */
+/* frontend/src/components/Navigation/ProfileButton.css */
+
+.profile-button-container {
+    position: relative;
+}
+
+.profile-dropdown {
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    width: 220px;
+    padding: 8px 0;
+    z-index: 10;
+}
+
+.profile-dropdown li {
     display: flex;
-    /* Flexbox for alignment */
     align-items: center;
-    /* Center content vertically */
+    justify-content: flex-start;
+    height: 40px;
+    /* Set a consistent height */
+    padding: 0 16px;
+    /* Adjust padding as needed */
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
-.profile-button:hover {
-    background-color: #0056b3;
-    /* Darker shade on hover */
-    transform: scale(1.05);
-    /* Slightly enlarge on hover */
+.profile-dropdown li:hover {
+    background-color: #f0f0f0;
 }
 
-.profile-button img {
-    border-radius: 50%;
-    /* Circular image */
-    width: 30px;
-    /* Image size */
-    height: 30px;
-    /* Image size */
+.profile-dropdown li svg {
     margin-right: 10px;
-    /* Space between image and text */
 }
 
-.profile-button span {
-    font-weight: bold;
-    /* Bold text */
+.profile-dropdown li button {
+    background: none;
+    border: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.profile-dropdown li:not(:last-child) {
+    border-bottom: 1px solid #eee;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Specific for Login and Signup Options */
+.profile-dropdown li .open-modal-button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #333;
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.profile-dropdown li .open-modal-button:hover {
+    background-color: #f0f0f0;
+}
+
+.profile-dropdown li .open-modal-button svg {
+    margin-right: 8px;
+}
+
+/* Adjusting button appearance */
+.profile-button-container button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    font-size: 24px;
+}
+
+.profile-dropdown li:hover {
+    background-color: #f0f0f0;
+    /* Light grey hover effect */
+}
+
+.profile-dropdown li {
+    padding: 12px 20px;
+    /* Adjusted padding for all items */
+}
+
+.profile-dropdown li a {
+    display: block;
+    padding: 10px 0;
+    text-decoration: none;
+    color: #333;
+}
+
+.profile-dropdown li a:hover {
+    background-color: #f0f0f0;
+    /* Light grey hover for links */
+}
+
+.profile-dropdown li .action-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.profile-dropdown li .action-link:hover {
+    background-color: #f0f0f0;
+    /* Light grey hover */
+}
+
+.action-link {
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: none;
+    font-size: inherit;
+    color: inherit;
+    padding: 0;
+    /* Remove extra padding from buttons */
+    display: flex;
+    align-items: center;
+}
+
+.action-link svg {
+    margin-right: 8px;
 }
