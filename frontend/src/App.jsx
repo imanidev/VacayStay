@@ -1,7 +1,7 @@
-// frontend/src/App.jsx
+import Homepage from "./components/Homepage/Homepage.jsx";
 
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 import Navigation from "./components/Navigation/Navigation";
@@ -10,7 +10,7 @@ import * as sessionActions from "./store/session";
 function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const sessionUser = useSelector((state) => state.session.user); // Get session user from Redux store
+  // const sessionUser = useSelector((state) => state.session.user); // Get session user from Redux store
 
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
@@ -22,11 +22,11 @@ function Layout() {
       <Navigation isLoaded={isLoaded} />
 
       {/* Render conditional header based on sessionUser */}
-      <header>
+      {/* <header>
         <h1>
           {sessionUser ? `Welcome, ${sessionUser.firstName}!` : "Welcome!"}
         </h1>
-      </header>
+      </header> */}
 
       {/* Conditionally render Outlet only after user restoration */}
       {isLoaded && <Outlet />}
@@ -36,13 +36,58 @@ function Layout() {
 
 const router = createBrowserRouter([
   {
+    path: "/",
     element: <Layout />,
-    children: [{ path: "/", element: null }],
+    children: [
+      {
+        index: true,
+        element: <Homepage />,
+      },
+      {
+        path: "spots",
+        children: [
+          {
+            path: ":spotId",
+
+            children: [
+              {
+                index: true,
+                element: <h1>Spot Details Page</h1>,
+              },
+              {
+                path: "edit",
+                element: <h1>Edit Spot Page</h1>,
+              },
+            ],
+          },
+          {
+            path: "new",
+            element: <h1>New Spot Page</h1>,
+          },
+          {
+            path: "current",
+            element: <h1>Current Spots Page</h1>,
+          },
+        ],
+      },
+      {
+        path: "reviews",
+        children: [
+          {
+            path: ":reviewId",
+          },
+        ],
+      },
+    ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
 export default App;
