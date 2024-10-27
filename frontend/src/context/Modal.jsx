@@ -1,8 +1,8 @@
 // frontend/src/context/Modal.jsx
-import { useRef, useState, createContext } from "react";
-import ReactDOM from "react-dom";
-import "./Modal.css";
-import useModal from "./useModal";
+import { useRef, useState, createContext } from 'react';
+import ReactDOM from 'react-dom';
+// import styles from './Modal.module.css'; // For CSS Modules
+import useModal from './useModal';
 
 const ModalContext = createContext();
 
@@ -13,7 +13,7 @@ export function ModalProvider({ children }) {
 
   const closeModal = () => {
     setModalContent(null);
-    if (typeof onModalClose === "function") {
+    if (typeof onModalClose === 'function') {
       setOnModalClose(null);
       onModalClose();
     }
@@ -51,4 +51,4 @@ export function Modal() {
   );
 }
 
-export { ModalContext }; // Export the context for use in other files
+export { ModalContext };

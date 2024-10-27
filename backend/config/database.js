@@ -1,4 +1,4 @@
-const config = require("./index");
+const config = require('./index');
 
 module.exports = {
   development: {
@@ -7,19 +7,22 @@ module.exports = {
     seederStorage: "sequelize",
     logQueryParameters: true,
     typeValidation: true,
+    dialectOptions: {
+      foreignKeys: true
+    }
   },
   production: {
-    use_env_variable: "DATABASE_URL",
-    dialect: "postgres",
-    seederStorage: "sequelize",
+    use_env_variable: 'DATABASE_URL',
+    dialect: 'postgres',
+    seederStorage: 'sequelize',
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false,
-      },
+        rejectUnauthorized: false
+      }
     },
     define: {
-      schema: process.env.SCHEMA,
-    },
-  },
+      schema: process.env.SCHEMA
+    }
+  }
 };

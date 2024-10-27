@@ -1,0 +1,144 @@
+
+.navBarContainer {
+  display: flex;
+  justify-content: center;
+  background-color: #1A1A1A;
+  color: white;
+  /* width: 100%; */
+  border-bottom: 0.1px solid #444444;
+  padding: 10px 20px;
+  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); */
+}
+
+ .navBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  background-color: #1A1A1A;
+  color: #fff;
+  width: 100%;
+  padding: 5px 0;
+  /* backgroun-color: purple; */
+}
+
+.navLeft {
+  /* flex: 1; */
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navRight {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.landingNav {
+  text-decoration: none;
+  color: #ececec;
+  font-optical-sizing: auto;
+  font-size: 37px;
+  font-weight: 399;
+  border: none;
+  /* padding-bottom: 13px; */
+  position: relative;
+}
+
+/* .landingNav::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5px;
+  border-radius: 6px;
+  background-color: #FA2B00;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 2.5s ease;
+} */
+
+/* .landingNav:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+} */
+
+
+
+/* .landingNav:hover {
+  text-decoration: underline;
+  color: #FFD700;
+} */
+
+
+.createStayButton {
+  /* background: linear-gradient(to right, #5340FF,  #5241FE); */
+  margin-right: 9px;
+  color:  #FA2B00;
+  padding: 15px 20px;
+  border-radius: 30px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 14px;
+  font-weight: 400;
+  border: 1px solid transparent;
+  transition: all 0.5s ease;
+  box-shadow: none;
+}
+
+.createStayButton:hover {
+  background: #2B2B2B;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(243, 243, 243, 0.1);
+}
+
+
+/* Media queries for responsiveness */
+@media (max-width: 1200px) {
+  .navBarContainer {
+    max-width: 900px;
+    width:100%;
+    margin: 0 auto;
+    padding:0 5px;
+
+  }
+
+}
+
+@media (max-width: 900px) {
+
+}
+
+@media (max-width: 600px) {
+
+  .navBar {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  .navLeft, .navRight {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .navRight {
+    margin-top: 5px;
+    flex-direction: column;
+  }
+
+  .createStayButton {
+    padding:0;
+    margin:0;
+  }
+
+  .landingNav {
+    padding:0;
+    margin:0;
+  }
+}

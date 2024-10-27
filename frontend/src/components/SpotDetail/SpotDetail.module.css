@@ -1,0 +1,286 @@
+.spotDetailsOuterContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+  background-color: #121212;
+}
+
+.spotDetailsContainer {
+  max-width: 1200px;
+  width: 100%;
+  background-color: #1a1a1a;
+  color: #f3f3f3;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 0 12px;
+}
+
+
+/* Spot Title */
+.spotTitle {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  text-align: left;
+  color: #FFFFFF;
+}
+
+/* Spot Location */
+.spotLocation {
+  font-size: 1.1rem;
+  color: #bbbbbb;
+  margin-bottom: 20px;
+}
+
+/* Spot Images Container */
+.spotImagesContainer {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.previewImage {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Multiple Smaller Images */
+.smallerImages {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  height: 400px;
+}
+
+.spotImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Description and Price Container */
+.descriptionPriceContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 35px;
+  margin-bottom: 20px;
+}
+
+/* Description Container */
+.descriptionContainer {
+  width: 65%;
+}
+
+.descriptionContainer h3 {
+  margin-top: 7px;
+}
+
+.spotDescription {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #cccccc;
+  margin-top: 10px;
+}
+
+/* Price Container */
+.priceContainer {
+  width: 30%;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #2a2a2a9e;
+  color: #f3f3f3;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+}
+
+
+
+.priceDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+
+/* Reserve Button */
+.reserveButton {
+  background-color: #ECECEC;
+  background: rgba(55, 55, 55, 0.197);
+  border-radius: 30px;
+  color: #FA2B00;
+  cursor:pointer;
+  border: 1px solid rgba(243, 243, 243, 0.5);
+  padding: 8px 14px;
+}
+
+.reserveButton:hover {
+  border: 1px solid #FA2B00;
+  background: #2b2b2b;
+  box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.8);
+}
+
+/* Reviews Section */
+
+
+.reviewCard {
+  padding: 10px;
+  background-color: #2a2a2a9e;
+  color: #f3f3f3;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  margin-top: 14px;
+  margin-bottom: 20px;
+}
+
+.reviewerName {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  color: #ffffff;
+}
+
+.reviewDate {
+  font-size: 0.9rem;
+  color: #bbbbbb;
+  margin-bottom: 15px;
+}
+
+.reviewText {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #e0e0e0;
+}
+
+._reviewSummary_3u027_225 {
+  font-size: 10px;
+  color: #F3F3F3;
+  font-weight: 200;
+}
+
+
+
+
+/* Horizontal line */
+hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #444444;
+}
+
+.customStar {
+  color:  #FFD700;
+  font-size: 20px;
+  font-weight: bolder;
+  margin-right: 4px;
+}
+
+
+.reviewsContainer {
+  margin-top: 30px;
+}
+.reviewsContainer h3{
+  margin-bottom: 4px;
+}
+
+
+.newText {
+font-size: 16px;
+font-weight: 700;
+text-transform: uppercase;
+color:  #bbbbbb;
+}
+
+.customStarTwo {
+  color: #FFD700;
+  margin-right: 9px;
+  font-size: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+.spotRating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.reviewsContainer p {
+  color: #f3f3f3;
+  font-style: italic;
+  opacity: 0.8;
+  margin-top: 10px;
+}
+
+.reviewSummary {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+
+
+.postReviewButton {
+  background-color: #ECECEC;
+  background: rgba(55, 55, 55, 0.197);
+  border-radius: 30px;
+  color: #FA2B00;
+  cursor:pointer;
+  border: 1px solid rgba(243, 243, 243, 0.5);
+  padding: 7px 8px;
+}
+
+.postReviewButton:hover {
+  border: 1px solid #FA2B00;
+}
+
+.reserveButton:hover {
+  border: 1px solid #FA2B00;
+  background: #2b2b2b;
+  box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.8);
+}
+
+
+/* Delete Review Button */
+.deleteReviewButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 100%;
+  max-width: 200px; */
+  background: #1a1a1ad6;
+  color: #FA2B00;
+  padding: 5px 25px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid #444444;
+  transition: all 0.5s ease;
+  box-shadow: none;
+  margin-top: 3.5px;
+}
+
+.deleteReviewButton:hover {
+  border: 1px solid #FA2B00;
+  /* background: #2b2b2b; */
+  box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.8);
+}
+
+
+.firstReviewText {
+  margin-top: 20px;
+  font-weight: 100;
+  font-style: italic;
+  font-size: 14px;
+  color: #F3F3F3;
+}

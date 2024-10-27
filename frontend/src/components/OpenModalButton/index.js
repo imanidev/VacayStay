@@ -1,1 +1,2 @@
-export { default } from "./OpenModalButton";
+// frontend/src/components/OpenModalButton/index.js
+export { default } from './OpenModalButton';

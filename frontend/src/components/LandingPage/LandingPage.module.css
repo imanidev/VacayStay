@@ -1,0 +1,238 @@
+.landingPageContainer {
+  display: flex;
+  background-color: #121212;
+  color: #ffffff;
+  padding: 20px;
+  min-height: 100vh;
+  justify-content: center;
+  width: 100%;
+  flex-direction: column;
+}
+
+.allSpotsContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:15px 11.5px;
+  justify-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 13px;
+  width: 100%;
+  height: auto;
+}
+
+.noSpotsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.noSpotsMessage {
+  color:#ECECEC ;
+  font-style: italic;
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+/* SPOT CARDS SPOT CARDS SPOT CARDS SPOT CARDS SPOT CARDS SPOT CARDS */
+
+.spotCard {
+  position: relative;
+  background-color: #1a1a1ac7;
+  border-radius: 3px;
+  padding: 10px 13px 0 13px;
+  height: 290px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  border: solid 1px #2E2E2E;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+  transition: all 0.5s ease;
+
+   /* max-width:269px; */
+  /* width:100%; */
+}
+
+.spotCard:hover {
+  background-color: #1c1c1c;
+  border: 1px solid rgba(243, 243, 243, 0.7);
+
+  /* box-shadow: 0 4px 10px rgba(250, 43, 0, 0.1); */
+  /* border: 1px solid rgba(243, 243, 243, 0.4); */
+  /* border-bottom: .1px solid #FA2B00; */
+}
+
+
+
+/* SPOT IMAGE  SPOT IMAGE SPOT IMAGE SPOT IMAGE SPOT IMAGE SPOT IMAGE*/
+
+
+
+.spotCard img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* * SPOT INFO SPOT INFO SPOT INFO SPOT INFO SPOT INFO SPOT INFO  / */
+
+.spotLocation, .spotRating {
+  margin: 0;
+  padding: 0;
+}
+
+.spotInfoContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding: 0;
+}
+
+.spotLocation {
+  font-size: 15px;
+  line-height: 14px;
+  font-weight: 399;
+  color: #ECECEC;
+}
+
+.spotRating {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+  color:  #F3F3F3;
+  line-height: 14px;
+}
+
+.spotRating svg {
+  color: #FFD700;
+  margin-right: 6.5px;
+  font-size: 11px;
+  font-weight: bolder;
+}
+
+.spotPrice p {
+  font-size: 13px;
+  font-weight: 650;
+  color: #acaaae ;
+  line-height: 14px;
+  text-align: left;
+  margin-top: 9.5px;
+  margin-bottom: 0px;
+  /* text-transform: lowercase; */
+  /* padding: 0; */
+}
+
+
+/* Tooltip styling */
+/* .tooltip {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 14px;
+  pointer-events: none;
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+} */
+
+/* .spotCard:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+} */
+
+/* Tooltip Styling */
+.tooltip {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: #151515e0;
+  color: #ECECEC;
+  border-radius: 3px;
+  padding: 8px;
+  font-size: 14px;
+  pointer-events: none;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+
+
+/* Show tooltip on hover */
+.spotCard:hover .tooltip {
+  opacity: 1;
+}
+
+
+
+
+/* Media queries for responsiveness */
+@media (max-width: 1200px) {
+
+  .landingPageContainer {
+   max-width: 900px;
+   width:100%;
+   margin: 0 auto;
+   background-color: #1d1d1d;
+   padding: 0 5px;
+  }
+
+  .allSpotsContainer {
+    max-width: 900px ;
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .spotCard {
+    position: relative;
+    max-width:269px;
+    width:100%
+  }
+}
+
+@media (max-width: 900px) {
+  .allSpotsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0 auto;
+    padding: 0;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .spotCard {
+    position: relative;
+    max-width: 269px;
+    width:100%
+  }
+
+}
+
+@media (max-width: 600px) {
+  .allSpotsContainer {
+    grid-template-columns: 1fr;
+    justify-content: space-between;
+    margin-top: 10px;
+
+  }
+
+  .landingPageContainer{
+    margin: 0;
+    padding: 0;
+}
+
+.allSpotsContainer {
+  .landingPageContainer{
+    margin: 0;
+    padding: 0;
+}
+
+}
+
+}

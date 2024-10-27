@@ -1,88 +1,75 @@
-"use strict";
-const { Model } = require("sequelize");
+// ./db/models/spot.js
+'use strict';
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // Spot belongs to a user (owner)
-      Spot.belongsTo(models.User, {
-        foreignKey: "ownerId",
-        as: "Owner",
-        onDelete: "CASCADE",
+      // Define associations here
+      Spot.belongsTo(models.User, { as: 'Owner', foreignKey: 'ownerId'});
+      Spot.hasMany(models.SpotImage, {
+        foreignKey: 'spotId',
+        onDelete: 'CASCADE'
       });
-      // Spot can have many reviews, bookings, and spot images
-      Spot.hasMany(models.Review, {
-        foreignKey: "spotId",
-        onDelete: "CASCADE",
-      });
-      Spot.hasMany(models.Booking, {
-        foreignKey: "spotId",
-        onDelete: "CASCADE",
-      });
-      Spot.hasMany(models.SpotImages, {
-        foreignKey: "spotId",
-        onDelete: "CASCADE",
-      });
+      Spot.hasMany(models.Review, { foreignKey: 'spotId', onDelete: 'CASCADE' });
+      Spot.hasMany(models.Booking, { foreignKey: 'spotId', onDelete: 'CASCADE' });
     }
   }
+
+  // Spot model
+
   Spot.init(
     {
       ownerId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-        onDelete: "CASCADE",
+        references: { model: 'Users' }
       },
       address: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       city: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       state: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       country: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       lat: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
+        type: DataTypes.DECIMAL,
+        allowNull: true
       },
       lng: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
+        type: DataTypes.DECIMAL,
+        allowNull: true
       },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          len: [1, 100]
+        }
       },
       description: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.TEXT,
+        allowNull: false
       },
       price: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
-      avgRating: DataTypes.FLOAT,
-      previewImage: DataTypes.STRING,
+        type: DataTypes.DECIMAL,
+        allowNull: false
+      }
     },
     {
       sequelize,
-      modelName: "Spot",
+      modelName: 'Spot',
     }
   );
+
   return Spot;
 };

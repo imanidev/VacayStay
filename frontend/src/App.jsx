@@ -1,16 +1,21 @@
-import Homepage from "./components/Homepage/Homepage.jsx";
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import * as sessionActions from './store/session';
+import Navigation from './components/Navigation/Navigation';
+import SpotList from './components/SpotList/SpotList';
+import CreateSpotForm from './components/CreateSpotForm/CreateSpotForm';
+import SpotDetail from './components/SpotDetail/SpotDetail';
+import ManageSpotsPage from './components/ManageSpotsPage/ManageSpotsPage';
+import LandingPage from './components/LandingPage/LandingPage';
 
-import Navigation from "./components/Navigation/Navigation";
-import * as sessionActions from "./store/session";
+import './components/Styles/Global.css';
 
 function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  // const sessionUser = useSelector((state) => state.session.user); // Get session user from Redux store
+  // const sessionUser = useSelector((state) => state.session.user);
 
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
@@ -18,17 +23,10 @@ function Layout() {
 
   return (
     <>
-      {/* Render Navigation bar on all pages */}
       <Navigation isLoaded={isLoaded} />
-
-      {/* Render conditional header based on sessionUser */}
-      {/* <header>
-        <h1>
-          {sessionUser ? `Welcome, ${sessionUser.firstName}!` : "Welcome!"}
-        </h1>
-      </header> */}
-
-      {/* Conditionally render Outlet only after user restoration */}
+      <header>
+        {/* <h1>{sessionUser ? `Welcome, ${greetingName}!` : "Welcome!"}</h1> */}
+      </header>
       {isLoaded && <Outlet />}
     </>
   );
@@ -36,62 +34,19 @@ function Layout() {
 
 const router = createBrowserRouter([
   {
-    path: "/",
     element: <Layout />,
     children: [
-      {
-        index: true,
-        element: <Homepage />,
-      },
-      {
-        path: "spots",
-        children: [
-          {
-            path: ":spotId",
-
-            children: [
-              {
-                index: true,
-                element: <h1>Spot Details Page</h1>,
-              },
-              {
-                path: "edit",
-                element: <h1>Edit Spot Page</h1>,
-              },
-            ],
-          },
-          {
-            path: "new",
-            element: <h1>New Spot Page</h1>,
-          },
-          {
-            path: "current",
-            element: <h1>Current Spots Page</h1>,
-          },
-        ],
-      },
-      {
-        path: "reviews",
-        children: [
-          {
-            path: ":reviewId",
-          },
-        ],
-      },
+      { path: '/', element: <LandingPage /> },  // Landing page
+      { path: '/spots', element: <SpotList /> },  // All spots
+      { path: '/create-spot', element: <CreateSpotForm /> },  // Create new spot
+      { path: '/spots/:spotId', element: <SpotDetail /> },  // Spot details
+      { path: '/manage-spots', element: <ManageSpotsPage /> },  // Manage spots
     ],
-  },
-  {
-    path: "*",
-    element: <h1>Page Not Found</h1>,
   },
 ]);
 
 function App() {
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

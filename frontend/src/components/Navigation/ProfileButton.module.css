@@ -1,0 +1,244 @@
+
+/* PROFILE BUTTON */
+
+.profileButtonContainer {
+  width: 100px;
+  height: 50px;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.profileButtonContainer button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.menuContainer {
+  border: solid 1.5px #2E2E2E;
+  border-radius: 35px;
+  padding: 7px 16px;
+  cursor: pointer;
+  color: #F8F1DD;
+  background: none;
+  transition: all 0.5s ease;
+  box-shadow: none;
+}
+
+.menuContainer:hover{
+  border: solid 1px #FA2B00;
+  background: #2b2b2b;
+  box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.8);
+}
+
+.menuContainer.active {
+  border: solid 1px #FA2B00 !important;
+  background: #2b2b2b !important;
+  box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* ICONS MENU*/
+
+.barsIcon {
+  margin-right: 10px;
+}
+
+.faIcon {
+font-size: 14px ;
+}
+
+
+.menuItem {
+  display: flex;
+  align-items: center;
+}
+
+/* Profile DropDown */
+.profileDropdown {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background-color: #242323fc;
+  color: #F3F3F3;
+  border-radius: 10px;
+  border: 0.1px solid #444444;
+  width: 220px;
+  padding: 8px 0;
+  z-index: 10;
+  border: 1px solid transparent;
+  transition: border 0.5s ease;
+  /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); */
+  margin-right: 0;
+  margin-top: 31px;
+}
+
+.profileDropdown:hover{
+  border: 1px solid rgba(213, 42, 30, 0.775);
+  /* border: 1.5px solid rgba(83, 64, 255, 0.9); */
+  /* border: 1px solid rgba(243, 243, 243, 0.3); */
+}
+
+.profileDropdown button {
+  margin-left: 8px;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+
+.profileDropdown li button {
+  padding: 0;
+  border: none;
+  box-shadow: none;
+}
+
+.profileDropdown li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 40px;
+  padding: 12px 20px;
+  font-size: 14px;
+  color: #ECECEC;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 13px;
+  transition: background-color 0.9s ease;
+  transition: color 0.5s ease;
+}
+
+.profileDropdown li:hover {
+  color: #FA2B00;
+  font-weight: 401;
+  background-color: #2B2B2B;
+}
+
+/* .uppercase {
+  text-transform: uppercase;
+} */
+
+
+.profileDropdown li:not(:last-child) {
+  border-bottom: 1px solid #444444;
+}
+
+.profileDropdown li svg {
+  margin-right: 0;
+  color: #F3F3F3;
+}
+
+.profileDropdown li button {
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.hidden {
+  display: none;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #444444;
+}
+
+
+.userText span {
+  /* display: block; */
+  font-size: 14px;
+  color: #F3F3F3;
+}
+
+.userText span:first-child {
+  white-space: nowrap;
+}
+
+.userText span:last-child {
+  display: block;
+  font-size: 12px;
+  margin-top: 2px;
+  word-wrap: break-word;
+  color: #F3F3F3;
+}
+
+
+.userName {
+  font-weight: 900;
+  font-size: 16px;
+  color: #D52B1E;
+  display: inline;
+  white-space: nowrap;
+}
+
+.helloText {
+  color: orange;
+}
+
+.userText {
+  margin: 0;
+  padding: 0;
+
+}
+
+.userName, .helloText {
+  margin: 0;
+  padding: 0;
+}
+
+
+.userText span.helloText {
+  color: #F3F3F3;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.userText span.userName {
+  color: #D52B1E;
+  font-weight: 700;
+  font-size: 18px;
+  display: inline;
+  white-space: nowrap;
+}
+
+.userInfo span:last-child {
+  color: #ECECEC;
+  font-weight: 300;
+  font-size: 11px;
+  margin-right: 20px;
+}
+
+
+.profileButtonContainer button:focus,
+.profileButtonContainer button:hover,
+.profileButtonContainer svg:focus,
+.profileButtonContainer svg:hover {
+  outline: none;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+
+
+@media (max-width: 600px) {
+  .menuContainer {
+    grid-template-columns: 1fr;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin:0;
+    margin-right:4px;
+  }
+}

@@ -1,52 +1,44 @@
-"use strict";
-const { Model } = require("sequelize");
+// ./db/models/booking.js
+'use strict';
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
     static associate(models) {
-      // define association here
-      Booking.belongsTo(models.User, {
-        foreignKey: "userId",
-        onDelete: "CASCADE",
-      });
-      Booking.belongsTo(models.Spot, {
-        foreignKey: "spotId",
-        onDelete: "CASCADE",
-      });
+
+// Define associations here
+Booking.belongsTo(models.Spot, { foreignKey: 'spotId'});
+Booking.belongsTo(models.User, { foreignKey: 'userId'});
+
     }
   }
+
   Booking.init(
     {
       spotId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: "Spots",
-          key: "id",
-        },
-        onDelete: "CASCADE",
+        references: { model: 'Spots' }
       },
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-        onDelete: "CASCADE",
+        references: { model: 'Users' }
       },
       startDate: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: false
       },
       endDate: {
         type: DataTypes.DATE,
-        allowNull: false,
-      },
+        allowNull: false
+      }
     },
     {
       sequelize,
-      modelName: "Booking",
+      modelName: 'Booking',
     }
   );
+
   return Booking;
 };

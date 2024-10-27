@@ -1,0 +1,173 @@
+/* frontend/src/components/CreateSpotForm/CreateSpotForm.css */
+
+.createSpotsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #121212;
+  padding: 65px;
+  min-height: 100vh;
+}
+
+.createSpotForm {
+  /* display:flex; */
+  width: 100%;
+  max-width: 600px;
+  padding: 25px;
+  background-color: #1A1A1A;
+  border-radius: 10px;
+  color: #ECECEC;
+}
+
+
+.createSpotForm h2 {
+  font-size: 40px;
+  font-weight: 200;
+  padding-bottom: 15px;
+  text-align: center;
+  color: #FA2B00;
+  font-optical-sizing: auto;
+}
+.formHeading {
+  color: #ECECEC;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+.formSubtext {
+  font-size: 15px;
+  font-weight: 300;
+  color: #cccccc;
+  margin-top: 3px;
+  margin-bottom: 27px;
+  text-align: start;
+}
+
+h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #ECECEC;
+}
+
+.labelForm {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ECECEC;
+}
+.labelForm input {
+  border: solid 0.4px #444343;
+}
+
+.labelForm textarea {
+  border: solid 0.4px #444343;
+}
+
+.labelForm span {
+  display:block;
+  margin-bottom: 2px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: solid 1.5px #2E2E2E;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: #2b2b2b;
+  color: #ECECEC;
+  box-sizing: border-box;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #666;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-group label {
+  width: 48%;
+}
+
+.error, .validation {
+  color: #FA2B00; /* Red for errors */
+  font-size: 12px;
+  margin-top: -5px;
+  margin-bottom: 10px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.createButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
+  background:none;
+  color:  #FA2B00;
+  padding: 15px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 14px;
+  font-weight: 400;
+  border: 1px solid transparent;
+  transition: all 0.5s ease;
+  box-shadow: none;
+}
+
+.createButton:hover {
+  background: #2B2B2B;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(243, 243, 243, 0.1);
+}
+
+/* Add some space between sections */
+.section-spacing {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+/* For form field descriptions and info */
+.field-description {
+  font-size: 13px;
+  color: #acaaae;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+/* Page background to match the theme */
+body {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+input:focus, textarea:focus {
+  outline: 0.4px solid #FA2B00;
+  transition: outline 0.3s ease-in-out;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
