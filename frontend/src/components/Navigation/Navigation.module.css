@@ -22,7 +22,10 @@
   /* backgroun-color: purple; */
 }
 
-.navLeft {
+.site-tagline{
+  font-size: small;
+}
+p .navLeft {
   /* flex: 1; */
   display: flex;
   justify-content: flex-end;

@@ -8,7 +8,7 @@ body {
 
   #root {
     /* background: linear-gradient(145deg, #202020, #151515); */
-    background: #1a1a1a;
+    background: #ffffff;
     border-radius: 10px;
     width: 100%;
     margin: 0;
@@ -17,9 +17,9 @@ body {
   }
 
   nav {
-    background-color: #121212;
+    background-color: #ffffff;
     /* padding: 10px 20px; */
-    color: #ffffff;
+    color: #000000;
   }
 /*
   h1, h2, p, a, span {
